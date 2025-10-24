@@ -1,10 +1,35 @@
 #import "LiteImageControl.h"
+#import "LiteImageControl-Swift.h"
+@implementation LiteImageControl {
+  LiteImageControlModule *moduleImpl;
+}
 
-@implementation LiteImageControl
-- (NSNumber *)multiply:(double)a b:(double)b {
-    NSNumber *result = @(a * b);
+-(instancetype) init {
+  self = [super init];
+  if(self) {
+    moduleImpl = [LiteImageControlModule new];
+  }
+  return self;
+}
 
-    return result;
+
+- (void)preload:(nonnull NSArray<NSString *> *)uris {
+  [moduleImpl preloadWithUris:uris];
+}
+
+- (void)getAllCache:(RCTPromiseResolveBlock)resolve
+             reject:(RCTPromiseRejectBlock)reject {
+  [moduleImpl getAllCacheWithResolver:^(NSArray<NSDictionary *> * _Nonnull result) {
+    resolve(result);
+  }];
+}
+
+- (void)clearMemoryCache {
+  [moduleImpl clearMemoryCache];
+}
+
+- (void)clearDiskCache {
+  [moduleImpl clearDiskCache];
 }
 
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
